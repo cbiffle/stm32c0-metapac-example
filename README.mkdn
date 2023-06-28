@@ -1,0 +1,16 @@
+# Basic stm32-metapac / stm32c0 example
+
+I'm trying to use some STM32C0 parts in designs, and the `stm32-rs` crate I
+normally turn to is lacking support. Adding it turned out to rub me up against
+all the parts of the crate I like least -- editing diffs to try to describe the
+thing I want, instead of just describing it.
+
+So I got very excited to find `stm32-metapac`, which uses a diferent approach
+(and not `svd2rust` even!). However, it has ... essentially no docs at the time
+of this writing, and I can't find any worked examples online that use a recent
+version of the crate.
+
+So, I have stumbled my way through writing one so you don't have to.
+
+This is tested on an STM32C011F6 board of my own design with an LED on PA8. If
+you want to blink a different pin, change the 8s.
