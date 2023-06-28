@@ -1,0 +1,19 @@
+[package]
+name = "stm32c0-bringup"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+cortex-m = { version = "0.7.7", features = ["inline-asm"] }
+cortex-m-rt = "0.7.3"
+panic-halt = "0.2.0"
+
+stm32-metapac = {version = "11.0", features = ["stm32c011f6", "rt"]}
+
+[[bin]]
+name = "stm32c0-bringup"
+test = false
+bench = false
+
+[profile.release]
+debug = true
