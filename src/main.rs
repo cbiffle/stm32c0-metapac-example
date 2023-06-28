@@ -7,11 +7,25 @@ use panic_halt as _;
 
 use cortex_m_rt::{entry, pre_init};
 use stm32_metapac as device;
-use device::gpio::vals::Moder;
+use device::{gpio::vals::Moder, rcc::vals::Hsidiv, flash::vals::Latency};
 
 #[entry]
 fn main() -> ! {
     let rcc = device::RCC;
+    let flash = device::FLASH;
+
+    // 48 MHz would be more fun.
+    flash.acr().modify(|v| {
+        v.set_latency(Latency::WS1);
+    });
+    while flash.acr().read().latency() != Latency::WS1 {
+        // spin - should only take a few cycles
+    }
+
+    rcc.cr().modify(|v| {
+        v.set_hsidiv(Hsidiv::DIV1);
+    });
+
     rcc.gpioenr().modify(|v| {
         v.set_gpioaen(true);
     });
@@ -26,11 +40,11 @@ fn main() -> ! {
         gpioa.bsrr().write(|w| {
             w.set_bs(8, true);
         });
-        cortex_m::asm::delay(6_000_000);
+        cortex_m::asm::delay(12_000_000);
         gpioa.bsrr().write(|w| {
             w.set_br(8, true);
         });
-        cortex_m::asm::delay(6_000_000);
+        cortex_m::asm::delay(12_000_000);
     }
 }
 
